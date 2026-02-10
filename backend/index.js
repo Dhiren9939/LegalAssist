@@ -15,18 +15,23 @@ if (!GEMINI_API_KEY) {
 }
 
 app.post("/api/chat", async (req, res) => {
-  console.log(req.body)
-  const response = await axios.post(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
-    req.body,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "X-goog-api-key": GEMINI_API_KEY,
+  try {
+    const response = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
+      req.body,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-goog-api-key": GEMINI_API_KEY,
+        },
       },
-    },
-  );
-  res.json(response.data);
+    );
+    res.json(response.data);
+  } catch(error) {
+    console.log(error.response.status);
+    console.log(error.response.data);
+    res.status(500).json({ error: "Failed to communicate with Gemini" });
+  }
 });
 
 app.listen(port, () => {
