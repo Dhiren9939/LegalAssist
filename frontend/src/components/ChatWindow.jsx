@@ -2,10 +2,9 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import { useState, useRef, useEffect } from "react";
 
-// Check for API key in environment variables
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-if (!GEMINI_API_KEY) {
-  throw Error("GEMINI_API_KEY is not set in the environment variables.");
+const BACKEND_LINK = import.meta.env.VITE_BACKEND_LINK;
+if (!BACKEND_LINK) {
+  throw Error("BACKEND_LINK is not set in the environment variables.");
 }
 
 export default function ChatWindow() {
@@ -75,7 +74,7 @@ ${finalInput}`,
       };
 
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+        `${BACKEND_LINK}/api/chat`,
         prompt
       );
 
